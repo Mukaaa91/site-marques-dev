@@ -24,9 +24,12 @@ const updateSchema = z.object({
 // PATCH para atualizar um orçamento
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
+    // Resolver params se for Promise (Next.js 15+)
+    const resolvedParams = params instanceof Promise ? await params : params
+    
     // Verificar autenticação
     const authHeader = request.headers.get('authorization')
     const cookieHeader = request.headers.get('cookie')
@@ -86,7 +89,7 @@ export async function PATCH(
     const { data, error } = await supabase
       .from('orcamentos')
       .update(validatedData)
-      .eq('id', params.id)
+      .eq('id', resolvedParams.id)
       .select()
       .single()
 
@@ -118,9 +121,12 @@ export async function PATCH(
 // DELETE para deletar um orçamento
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
+    // Resolver params se for Promise (Next.js 15+)
+    const resolvedParams = params instanceof Promise ? await params : params
+    
     // Verificar autenticação via header Authorization
     const authHeader = request.headers.get('authorization')
 
@@ -167,7 +173,10 @@ export async function DELETE(
     }
 
     // Verificar se o ID é válido
-    if (!params.id || params.id.length === 0) {
+    if (!resolvedParams.id || resolvedParams.id.length === 0) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('ID inválido recebido:', resolvedParams.id, 'Tipo:', typeof resolvedParams.id)
+      }
       return NextResponse.json(
         { error: 'ID do orçamento inválido' },
         { status: 400 }
@@ -178,7 +187,7 @@ export async function DELETE(
     const { error, data: deletedData } = await supabase
       .from('orcamentos')
       .delete()
-      .eq('id', params.id)
+      .eq('id', resolvedParams.id)
       .select()
 
     if (error) {
@@ -188,7 +197,7 @@ export async function DELETE(
           code: error.code,
           details: error.details,
           hint: error.hint,
-          id: params.id
+          id: resolvedParams.id
         })
       }
       

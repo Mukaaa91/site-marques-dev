@@ -96,7 +96,22 @@ export default function AdminOrcamentosPage() {
       }
 
       const result = await response.json()
-      setOrcamentos(result.data || [])
+      const orcamentosData = result.data || []
+      
+      // Validar que todos os orçamentos têm ID
+      const validOrcamentos = orcamentosData.filter((o: Orcamento) => {
+        if (!o.id) {
+          console.warn('Orçamento sem ID encontrado:', o)
+          return false
+        }
+        return true
+      })
+      
+      if (validOrcamentos.length !== orcamentosData.length) {
+        console.warn(`Alguns orçamentos foram filtrados por falta de ID: ${orcamentosData.length - validOrcamentos.length}`)
+      }
+      
+      setOrcamentos(validOrcamentos)
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Erro:', error)
@@ -347,6 +362,13 @@ export default function AdminOrcamentosPage() {
   }
 
   const deleteOrcamento = async (id: string) => {
+    // Validar ID antes de prosseguir
+    if (!id || id.trim().length === 0) {
+      console.error('ID do orçamento inválido:', id)
+      toast.error('Erro: ID do orçamento inválido')
+      return
+    }
+
     if (!confirm('Tem certeza que deseja excluir este orçamento?')) return
 
     try {
@@ -560,6 +582,11 @@ export default function AdminOrcamentosPage() {
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation()
+                            if (!orcamento.id) {
+                              console.error('Orçamento sem ID:', orcamento)
+                              toast.error('Erro: Orçamento sem ID válido')
+                              return
+                            }
                             deleteOrcamento(orcamento.id)
                           }}
                         >
