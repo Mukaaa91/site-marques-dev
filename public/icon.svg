@@ -1,0 +1,60 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fb923c"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  
+  <rect
+    x="8"
+    y="8"
+    width="164"
+    height="164"
+    rx="48"
+    ry="48"
+    fill="url(#orangeGradient)"
+  />
+  
+  <path
+    d="M90 40 C50 70, 47 140, 90 180 C133 140, 130 70, 90 40"
+    fill="white"
+    fill-opacity="0.95"
+  />
+  
+  <path
+    d="M90 60 L90 160"
+    stroke="url(#leafGradient)"
+    stroke-width="6"
+    stroke-linecap="round"
+  />
+  
+  <path
+    d="M90 90 L70 105"
+    stroke="url(#leafGradient)"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <path
+    d="M90 115 L65 135"
+    stroke="url(#leafGradient)"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <path
+    d="M90 90 L110 105"
+    stroke="url(#leafGradient)"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <path
+    d="M90 115 L115 135"
+    stroke="url(#leafGradient)"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+</svg>
